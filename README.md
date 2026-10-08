@@ -20,6 +20,18 @@ The app starts on http://localhost:8080. The H2 console is at http://localhost:8
 ./mvnw test                   # Windows: mvnw.cmd test
 ```
 
+## Workflow
+
+Each question goes through `scripts/ticket.sh` (or the Claude Code skills `/ticket q<n>` and `/merge-ticket q<n>`):
+
+```bash
+scripts/ticket.sh start q1             # branch from latest main
+scripts/ticket.sh check                # run all tests
+scripts/ticket.sh pr q1 pr-body.md     # test, push, open PR, add its link below
+scripts/ticket.sh merge q1             # squash-merge, sync main, re-run tests
+scripts/ticket.sh status               # every question's PR state
+```
+
 ## Questions
 
 | # | Question | PR link |
