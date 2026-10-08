@@ -33,7 +33,7 @@ The app starts on http://localhost:8080. The H2 console is at http://localhost:8
 |---|----------|---------|
 | 1 | Task Manager API | https://github.com/eaiswarya/be-interview-prep/pull/3 |
 | 2 | URL Shortener | https://github.com/eaiswarya/be-interview-prep/pull/4 |
-| 3 | Authentication & Roles | |
+| 3 | Authentication & Roles | https://github.com/eaiswarya/be-interview-prep/pull/5 |
 | 4 | Product Catalog | |
 | 5 | Order Service | |
 
