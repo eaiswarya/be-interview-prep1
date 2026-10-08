@@ -14,6 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -43,6 +44,13 @@ public class GlobalExceptionHandler {
                     List.of(new ApiError.FieldError(field, "has an invalid value")));
         }
         return build(HttpStatus.BAD_REQUEST, "Malformed JSON request body", request, List.of());
+    }
+
+    /** A required header or query parameter is missing (e.g. Idempotency-Key). */
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    ResponseEntity<ApiError> handleMissingHeader(MissingRequestHeaderException ex, HttpServletRequest request) {
+        return build(HttpStatus.BAD_REQUEST, "Validation failed", request,
+                List.of(new ApiError.FieldError(ex.getHeaderName(), "header is required")));
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)

@@ -53,6 +53,6 @@ Request flow: `controller` → `service` → `repository` → database, with `dt
 | 2 | URL Shortener | https://github.com/eaiswarya/be-interview-prep/pull/4 |
 | 3 | Authentication & Roles | https://github.com/eaiswarya/be-interview-prep/pull/5 |
 | 4 | Product Catalog | https://github.com/eaiswarya/be-interview-prep/pull/6 |
-| 5 | Order Service | |
+| 5 | Order Service | https://github.com/eaiswarya/be-interview-prep/pull/8 |
 
 **Video:**
