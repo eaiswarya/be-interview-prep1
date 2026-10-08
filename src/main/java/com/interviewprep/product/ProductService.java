@@ -2,7 +2,10 @@ package com.interviewprep.product;
 
 import com.interviewprep.common.InvalidRequestException;
 import com.interviewprep.common.PageResponse;
+import com.interviewprep.common.ResourceNotFoundException;
 import java.util.Set;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,36 @@ public class ProductService {
         validate(filter, pageable.getSort());
         return PageResponse.from(
                 repository.findAll(ProductSpecifications.matching(filter), pageable).map(ProductResponse::from));
+    }
+
+    /**
+     * Cached by id. sync = true makes concurrent misses for the same id wait for a single database load
+     * (Caffeine computes the entry atomically), and an eviction issued while that load is in flight waits for
+     * it and then removes it, so an old row loaded just before an update cannot survive in the cache.
+     */
+    @Cacheable(cacheNames = ProductCacheConfig.PRODUCTS, key = "#id", sync = true)
+    @Transactional(readOnly = true)
+    public ProductResponse get(Long id) {
+        return ProductResponse.from(find(id));
+    }
+
+    /** Evicts rather than puts: the next read reloads the committed row, so the cache never holds uncommitted data. */
+    @CacheEvict(cacheNames = ProductCacheConfig.PRODUCTS, key = "#id")
+    @Transactional
+    public ProductResponse update(Long id, ProductRequest request) {
+        Product product = find(id);
+        product.update(request.name(), request.category(), request.price(), request.stock(), request.rating());
+        return ProductResponse.from(product);
+    }
+
+    @CacheEvict(cacheNames = ProductCacheConfig.PRODUCTS, key = "#id")
+    @Transactional
+    public void delete(Long id) {
+        repository.delete(find(id));
+    }
+
+    private Product find(Long id) {
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", id));
     }
 
     private static void validate(ProductFilter filter, Sort sort) {
