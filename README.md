@@ -8,9 +8,16 @@ Product doc: [docs/PRODUCT.md](docs/PRODUCT.md)
 
 ## Run the app
 
+The JWT signing key is never stored in the repo. Set it (at least 32 characters) before starting the app; optionally set an admin account to create at startup:
+
 ```bash
+export JWT_SECRET="$(openssl rand -base64 48)"
+export ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD=change-me-please   # optional
+
 ./mvnw spring-boot:run        # Windows: mvnw.cmd spring-boot:run
 ```
+
+All `/api/**` endpoints except register and login need `Authorization: Bearer <accessToken>` from `POST /api/auth/login`. Short-link redirects (`GET /{code}`) are public.
 
 The app starts on http://localhost:8080. The H2 console is at http://localhost:8080/h2-console (JDBC URL `jdbc:h2:mem:beprep`, user `sa`, no password).
 
@@ -26,7 +33,7 @@ The app starts on http://localhost:8080. The H2 console is at http://localhost:8
 |---|----------|---------|
 | 1 | Task Manager API | https://github.com/eaiswarya/be-interview-prep/pull/3 |
 | 2 | URL Shortener | https://github.com/eaiswarya/be-interview-prep/pull/4 |
-| 3 | Authentication & Roles | |
+| 3 | Authentication & Roles | https://github.com/eaiswarya/be-interview-prep/pull/5 |
 | 4 | Product Catalog | |
 | 5 | Order Service | |
 
