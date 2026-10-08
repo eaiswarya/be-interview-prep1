@@ -21,6 +21,24 @@ All `/api/**` endpoints except register and login need `Authorization: Bearer <a
 
 The app starts on http://localhost:8080. The H2 console is at http://localhost:8080/h2-console (JDBC URL `jdbc:h2:mem:beprep`, user `sa`, no password).
 
+## Project structure
+
+Code is grouped by layer under `src/main/java/com/interviewprep`:
+
+| Package | Contents |
+|---|---|
+| `controller` | REST endpoints; take and return DTOs |
+| `service` | Business rules and transactions |
+| `repository` | Spring Data JPA repositories and query specifications |
+| `model` | JPA entities and enums |
+| `dto` | Request/response records, `ApiError`, `PageResponse` |
+| `exception` | `GlobalExceptionHandler` and custom exceptions |
+| `config` | Security, JWT and cache configuration |
+| `validation` | Custom Bean Validation constraints |
+| `seeder` | Startup data (products, first admin) |
+
+Request flow: `controller` → `service` → `repository` → database, with `dto` at the HTTP edge and `model` inside.
+
 ## Run the tests
 
 ```bash
