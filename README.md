@@ -2,7 +2,7 @@
 
 Backend interview prep assignment: five Spring Boot features, each shipped as its own branch and PR.
 
-Product doc: [docs/PRODUCT.md](docs/PRODUCT.md)
+Product doc: [docs/product.md](docs/product.md)
 
 **Stack:** Java 17+, Spring Boot 3.5, Maven (wrapper included), H2 in-memory database.
 
