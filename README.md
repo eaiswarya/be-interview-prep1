@@ -1,14 +1,10 @@
 # be-interview-prep
 
-Backend interview prep assignment: five Spring Boot features, each shipped as its own branch and PR.
-
-Product doc: [docs/PRODUCT.md](docs/PRODUCT.md)
-
-**Stack:** Java 17+, Spring Boot 3.5, Maven (wrapper included), H2 in-memory database.
+Five backend features built with Java 17, Spring Boot 3.5, Maven and an in-memory H2 database, each delivered as its own pull request.
 
 ## Run the app
 
-The JWT signing key is never stored in the repo. Set it (at least 32 characters) before starting the app; optionally set an admin account to create at startup:
+The JWT signing key is read from the environment and must be at least 32 characters. An admin account can optionally be created at startup.
 
 ```bash
 export JWT_SECRET="$(openssl rand -base64 48)"
@@ -17,27 +13,7 @@ export ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD=change-me-please   # optiona
 ./mvnw spring-boot:run        # Windows: mvnw.cmd spring-boot:run
 ```
 
-All `/api/**` endpoints except register and login need `Authorization: Bearer <accessToken>` from `POST /api/auth/login`. Short-link redirects (`GET /{code}`) are public.
-
-The app starts on http://localhost:8080. The H2 console is at http://localhost:8080/h2-console (JDBC URL `jdbc:h2:mem:beprep`, user `sa`, no password).
-
-## Project structure
-
-Code is grouped by layer under `src/main/java/com/interviewprep`:
-
-| Package | Contents |
-|---|---|
-| `controller` | REST endpoints; take and return DTOs |
-| `service` | Business rules and transactions |
-| `repository` | Spring Data JPA repositories and query specifications |
-| `model` | JPA entities and enums |
-| `dto` | Request/response records, `ApiError`, `PageResponse` |
-| `exception` | `GlobalExceptionHandler` and custom exceptions |
-| `config` | Security, JWT and cache configuration |
-| `validation` | Custom Bean Validation constraints |
-| `seeder` | Startup data (products, first admin) |
-
-Request flow: `controller` → `service` → `repository` → database, with `dto` at the HTTP edge and `model` inside.
+The app runs on http://localhost:8080. Register with `POST /api/auth/register`, log in with `POST /api/auth/login`, and send the returned token as `Authorization: Bearer <accessToken>` on every other `/api/**` request. Short-link redirects (`GET /{code}`) are public.
 
 ## Run the tests
 
