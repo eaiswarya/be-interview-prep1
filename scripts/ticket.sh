@@ -96,7 +96,7 @@ cmd_pr() {
   if ! grep -q "^| $n | .*$url" README.md; then
     sed -i "s#^| $n | \(.*\) | *[^|]* *|\$#| $n | \1 | $url |#" README.md
     if ! git diff --quiet README.md; then
-      git commit -q -m "Add Q$n PR link to README" README.md
+      git commit -q -m "Add Q$n PR link to README" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" README.md
       git push -q
       echo "==> README updated with the PR link"
     fi
