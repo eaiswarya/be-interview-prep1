@@ -54,6 +54,11 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.NOT_FOUND, ex.getMessage(), request, List.of());
     }
 
+    @ExceptionHandler(ResourceGoneException.class)
+    ResponseEntity<ApiError> handleGone(ResourceGoneException ex, HttpServletRequest request) {
+        return build(HttpStatus.GONE, ex.getMessage(), request, List.of());
+    }
+
     @ExceptionHandler(NoResourceFoundException.class)
     ResponseEntity<ApiError> handleNoRoute(NoResourceFoundException ex, HttpServletRequest request) {
         return build(HttpStatus.NOT_FOUND, "No endpoint " + request.getMethod() + " " + request.getRequestURI(),
