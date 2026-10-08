@@ -8,9 +8,16 @@ Product doc: [docs/PRODUCT.md](docs/PRODUCT.md)
 
 ## Run the app
 
+The JWT signing key is never stored in the repo. Set it (at least 32 characters) before starting the app; optionally set an admin account to create at startup:
+
 ```bash
+export JWT_SECRET="$(openssl rand -base64 48)"
+export ADMIN_EMAIL=admin@example.com ADMIN_PASSWORD=change-me-please   # optional
+
 ./mvnw spring-boot:run        # Windows: mvnw.cmd spring-boot:run
 ```
+
+All `/api/**` endpoints except register and login need `Authorization: Bearer <accessToken>` from `POST /api/auth/login`. Short-link redirects (`GET /{code}`) are public.
 
 The app starts on http://localhost:8080. The H2 console is at http://localhost:8080/h2-console (JDBC URL `jdbc:h2:mem:beprep`, user `sa`, no password).
 
