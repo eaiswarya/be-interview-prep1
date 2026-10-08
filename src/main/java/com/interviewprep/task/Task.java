@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 public class Task {
@@ -42,7 +43,8 @@ public class Task {
 
     @PrePersist
     void onCreate() {
-        createdAt = Instant.now();
+        // Truncate so the value returned on create matches what the database stores and returns later.
+        createdAt = Instant.now().truncatedTo(ChronoUnit.MILLIS);
     }
 
     public void update(String title, String description, TaskStatus status, LocalDate dueDate) {
